@@ -1,0 +1,48 @@
+plugins {
+    id "org.springframework.boot" version "2.2.10.RELEASE"
+    id "io.spring.dependency-management" version "1.0.9.RELEASE"
+}
+
+dependencies {
+    // ---------------------------- Lombok Inclusion --------------------------------
+    compileOnly("org.projectlombok:lombok:1.18.12")
+    annotationProcessor("org.projectlombok:lombok:1.18.12")
+
+    // ---------------------------- Swagger Inclusion --------------------------------
+    implementation("io.springfox:springfox-swagger2:2.9.2")
+    implementation("io.springfox:springfox-swagger-ui:2.9.2")
+    // ---------------------------- Spring Inclusion --------------------------------
+    implementation("org.springframework.boot:spring-boot-starter-web")
+
+
+    implementation("commons-beanutils:commons-beanutils:1.9.4")
+
+    // ---------------------------- Unit Test Inclusion --------------------------------
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+
+    implementation project(":notes-ety")
+    implementation("org.springframework.data:spring-data-mongodb:2.2.10.RELEASE")
+}
+
+apply plugin: 'com.palantir.docker'
+springBoot {
+    buildInfo()
+}
+
+bootJar {
+    baseName = "NoteBox"
+    version = "${apiVer}"
+}
+
+task unpack(type: Copy) {
+    dependsOn bootJar
+    from(zipTree(tasks.bootJar.outputs.files.singleFile))
+    into("build/dependency")
+}
+
+docker {
+    name "${bootJar.baseName}:${bootJar.version}"
+    files "entrypoint.sh"
+    copySpec.from(tasks.unpack.outputs).into("dependency")
+    buildArgs(['DEPENDENCY': "dependency"])
+}

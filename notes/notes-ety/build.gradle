@@ -1,0 +1,13 @@
+plugins {
+}
+
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.8'
+    annotationProcessor 'org.projectlombok:lombok:1.18.8'
+    compile("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.10.3")
+    implementation("commons-io:commons-io:2.6")
+    implementation("org.hibernate.validator:hibernate-validator:6.1.5.Final")
+    implementation("org.springframework.data:spring-data-mongodb:2.2.10.RELEASE")
+
+}

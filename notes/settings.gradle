@@ -1,0 +1,15 @@
+
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+    }
+}
+rootProject.name = 'notes'
+
+include ':notes-ety'
+include ':notes-ws'
+
+project(':notes-ety').projectDir  = new File('./notes-ety')
+project(':notes-ws').projectDir  = new File('./notes-ws')
+
+

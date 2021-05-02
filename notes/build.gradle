@@ -1,0 +1,46 @@
+plugins {
+	id "org.sonarqube" version "2.7"
+}
+subprojects {
+	apply plugin: 'java'
+	apply plugin: 'jacoco'
+	apply plugin: 'maven'
+	apply plugin: 'eclipse'
+
+	eclipse {
+		classpath {
+			downloadJavadoc = true
+			downloadSources = true
+		}
+	}
+
+	group = "${apiGrp}"
+	version = "${apiVer}"
+
+	sourceCompatibility = "1.8"
+	targetCompatibility = "1.8"
+
+
+	// In this section you declare where to find the dependencies of your project
+	repositories {
+		mavenLocal()
+		maven {
+			url "https://plugins.gradle.org/m2/"
+		}
+	}
+
+	buildscript {
+		repositories {
+			mavenLocal()
+			maven {
+				url "https://plugins.gradle.org/m2/"
+			}
+		}
+
+		dependencies {
+			classpath('gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.13.0')
+		}
+	}
+
+}
+
